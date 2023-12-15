@@ -7,7 +7,7 @@ import {
   useState,
   useId,
 } from "react";
-import { Quote as Q } from "../model/model";
+import { Quotes as Q } from "../model/model";
 
 import Button from "@mui/material/Button";
 import SearchIcon from "@mui/icons-material/Search";
@@ -41,7 +41,7 @@ interface BtnProps {
   loading: boolean;
 }
 
-const BtnRandomQuote: FC<BtnProps> = ({ setClick, loading }): JSX.Element => {
+const BtnRandom: FC<BtnProps> = ({ setClick, loading }): JSX.Element => {
   return (
     <>
       {loading ? (
@@ -49,7 +49,6 @@ const BtnRandomQuote: FC<BtnProps> = ({ setClick, loading }): JSX.Element => {
           loading
           loadingPosition="start"
           startIcon={<SaveIcon />}
-          className="MuiLoadingButton-containedPrimary"
           sx={{ marginInline: "auto", width: "70%" }}
           disabled
         >
@@ -79,10 +78,7 @@ const Content: FC<ContentProps> = ({
   const [tags, setTags] = useState<string>("");
   const cardId: string = useId();
 
-  const {
-    speechSynthesis,
-    navigator: { clipboard },
-  }: Window = window;
+  const { speechSynthesis, navigator: { clipboard } }: Window = window;
 
   useEffect((): void => {
     setData(content);
@@ -141,7 +137,7 @@ const Content: FC<ContentProps> = ({
               <Skeleton variant="text" sx={{ width: "70%" }} />
             </>
           ) : (
-            <blockquote>{data.content}</blockquote>
+            <blockquote>"{data.content}"</blockquote>
           )}
         </Typography>
       </CardContent>
@@ -210,14 +206,14 @@ const Content: FC<ContentProps> = ({
             margin: "15px 0",
           }}
         >
-          <BtnRandomQuote setClick={setClick} loading={loading} />
+          <BtnRandom setClick={setClick} loading={loading} />
           <Button
             variant="outlined"
             color="success"
             sx={{ margin: "15px auto", width: "70%" }}
             onClick={(): void => handleCopyText(data.content)}
           >
-            copy quote
+            copy quotes
           </Button>
         </Box>
       </CardActions>

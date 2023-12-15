@@ -1,6 +1,6 @@
 import { JSX, useState, useEffect } from "react";
 import axios, { AxiosResponse, HttpStatusCode } from "axios";
-import { Options , Quote , Response , Config } from "./model/model"
+import { Options , Quotes , Response , Config } from "./model/model"
 import Content from "./components/Card";
 
 const { env: { URL, X_RapidAPI_Key, X_RapidAPI_Host }}: NodeJS.Process = process;
@@ -15,7 +15,7 @@ const options: Options = {
 };
 
 const App = (): JSX.Element => {
-  const [quote, setQuote] = useState<Quote>({
+  const [quotes, setQuotes] = useState<Quotes>({
     id: 0,
     originator: {
       id: 0,
@@ -42,7 +42,7 @@ const App = (): JSX.Element => {
       );
       const { data, status }: AxiosResponse<Response, Config> = response;
       if (status === HttpStatusCode.Ok) {
-        setQuote(data);
+        setQuotes(data);
       } else {
         throw new Error("something went wrong!");
       }
@@ -64,7 +64,7 @@ const App = (): JSX.Element => {
 
   return (
     <>
-      <Content content={quote as Quote} loading={loading} setClick={setClick} />
+      <Content content={quotes} loading={loading} setClick={setClick} />
     </>
   );
 };

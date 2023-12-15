@@ -24,4 +24,4 @@ export interface Response {
   }
   
 export type Config = Options;
-export type Quote = Response;
+export type Quotes = Response;
