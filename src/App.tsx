@@ -3,14 +3,14 @@ import axios, { AxiosResponse, HttpStatusCode } from "axios";
 import { Options , Quotes , Response , Config } from "./model/model"
 import Content from "./components/Card";
 
-const { env: { URL, X_RapidAPI_Key, X_RapidAPI_Host }}: NodeJS.Process = process;
+// const { env: { URL, X_RapidAPI_Key, X_RapidAPI_Host }}: NodeJS.Process = process;
 
 const options: Options = {
   method: "GET",
-  url: URL as string,
+  url: "https://quotes15.p.rapidapi.com/quotes/random/",
   headers: {
-    "X-RapidAPI-Key": X_RapidAPI_Key as string,
-    "X-RapidAPI-Host": X_RapidAPI_Host as string,
+    "X-RapidAPI-Key": "033424c2e0msh75b7c318f2705bbp1e00b1jsne4c89a49621a",
+    "X-RapidAPI-Host": "quotes15.p.rapidapi.com",
   },
 };
 
