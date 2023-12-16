@@ -1,4 +1,4 @@
-import { JSX, useState, useEffect } from "react";
+import { JSX, useState, useEffect , useCallback } from "react";
 import axios, { AxiosResponse, HttpStatusCode } from "axios";
 import { Options , Quotes , Response , Config } from "./model/model"
 import Content from "./components/Card";
@@ -51,11 +51,14 @@ const App = (): JSX.Element => {
     } finally {
       setLoading((l: boolean): boolean => !l);
       setClick(false);
+      console.log(quotes);
     }
   };
 
+  const callback:() => Promise<void> = useCallback(fetchData , [click]);
+
   useEffect(() => {
-    fetchData();
+    callback();
 
     return (): void => {
       controller.abort();

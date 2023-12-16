@@ -11,7 +11,6 @@ import { Quotes as Q } from "../model/model";
 
 import Button from "@mui/material/Button";
 import SearchIcon from "@mui/icons-material/Search";
-import SaveIcon from "@mui/icons-material/Save";
 import LoadingButton from "@mui/lab/LoadingButton";
 import Box from "@mui/system/Box";
 import Card from "@mui/material/Card";
@@ -24,21 +23,21 @@ import Tooltip from "@mui/material/Tooltip";
 import IconButton from "@mui/material/IconButton";
 import RecordVoiceOverIcon from "@mui/icons-material/RecordVoiceOver";
 import SellIcon from "@mui/icons-material/Sell";
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 
 import Swal from "sweetalert2";
 import withReactContent, { ReactSweetAlert } from "sweetalert2-react-content";
-
 const MySwal: ReactSweetAlert = withReactContent(Swal);
 
-interface ContentProps {
-  content: Q;
-  loading: boolean;
-  setClick: Dispatch<SetStateAction<boolean>>;
-}
+import bg from "../assets/black-glistening-background.jpg"
 
 interface BtnProps {
   setClick: Dispatch<SetStateAction<boolean>>;
   loading: boolean;
+}
+
+interface ContentProps extends BtnProps {
+  content: Q;
 }
 
 const BtnRandom: FC<BtnProps> = ({ setClick, loading }): JSX.Element => {
@@ -47,8 +46,8 @@ const BtnRandom: FC<BtnProps> = ({ setClick, loading }): JSX.Element => {
       {loading ? (
         <LoadingButton
           loading
-          loadingPosition="start"
-          startIcon={<SaveIcon />}
+          loadingPosition="center"
+          variant="outlined"
           sx={{ marginInline: "auto", width: "70%" }}
           disabled
         >
@@ -77,8 +76,12 @@ const Content: FC<ContentProps> = ({
   const [data, setData] = useState<Q>(content);
   const [tags, setTags] = useState<string>("");
   const cardId: string = useId();
+  const authorId: string = useId();
 
-  const { speechSynthesis, navigator: { clipboard } }: Window = window;
+  const {
+    speechSynthesis,
+    navigator: { clipboard },
+  }: Window = window;
 
   useEffect((): void => {
     setData(content);
@@ -92,7 +95,9 @@ const Content: FC<ContentProps> = ({
       setTimeout((): void => {
         MySwal.fire({
           icon: "success",
-          text: "คัดลอกข้อความสำเร็จ!",
+          text: "Successfully copied text!",
+          showConfirmButton: false,
+          timer: 1300,
         });
       }, 400);
     });
@@ -121,23 +126,36 @@ const Content: FC<ContentProps> = ({
         width: "660px",
         maxWidth: "560px",
         height: "max-content",
-        padding: "0 60px 60px",
+        padding: "60px",
         textAlign: "start",
-        textIndent: "1.7rem",
         margin: "70px auto",
         cursor: "default",
+        borderRadius: "14px",
+        borderColor: "grey.500",
+        boxShadow: 10,
       }}
     >
-      <CardContent>
+      <CardContent
+        sx={{
+          backgroundImage: `url(${bg})`,
+          backgroundPosition: "center",
+          backgroundSize: "contain",
+          color: "white",
+          marginBottom: "20px",
+          borderRadius: "14px",
+        }}
+      >
         <Typography variant="h5" component="div">
           {loading ? (
             <>
-              <Skeleton variant="text" sx={{ width: "100%" }} />
-              <Skeleton variant="text" sx={{ width: "100%" }} />
-              <Skeleton variant="text" sx={{ width: "70%" }} />
+              <Skeleton variant="text" sx={{ width: "100%", backgroundColor: "rgba(255, 255, 255, 0.918)" }} />
+              <Skeleton variant="text" sx={{ width: "100%", backgroundColor: "rgba(255, 255, 255, 0.918)" }} />
+              <Skeleton variant="text" sx={{ width: "70%", backgroundColor: "rgba(255, 255, 255, 0.918)" }} />
             </>
           ) : (
-            <blockquote>"{data.content}"</blockquote>
+            <blockquote>
+              "{data.content}"
+            </blockquote>
           )}
         </Typography>
       </CardContent>
@@ -146,12 +164,13 @@ const Content: FC<ContentProps> = ({
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
+          width: "100%"
         }}
       >
         {loading ? (
           <Skeleton variant="text" sx={{ fontSize: "1rem", width: "60%" }} />
         ) : (
-          <Typography component="div">
+          <Typography component="div" sx={{ width: "50%"}}>
             <Box component="div" display="flex" textAlign="center">
               <Tooltip title="speak">
                 <IconButton
@@ -186,12 +205,18 @@ const Content: FC<ContentProps> = ({
           component="h5"
           align="right"
           color="primary.main"
-          sx={{ textAlign: "right", cursor: "default" }}
+          sx={{ textAlign: "right", cursor: "default", width: "50%" }}
         >
           {loading ? (
-            <Skeleton variant="text" sx={{ width: "100%" }} />
+            <Skeleton variant="text" sx={{ width: "30%" }} />
           ) : (
-            data.originator.name
+            <a
+              href={data.url}
+              target="_blank"
+              id={`${authorId}${data.originator.master_id}`}
+            >
+              {data.originator.name}
+            </a>
           )}
         </Typography>
       </CardActions>
@@ -208,6 +233,7 @@ const Content: FC<ContentProps> = ({
         >
           <BtnRandom setClick={setClick} loading={loading} />
           <Button
+            startIcon={<ContentCopyIcon/>}
             variant="outlined"
             color="success"
             sx={{ margin: "15px auto", width: "70%" }}

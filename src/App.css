@@ -3,3 +3,29 @@
 *{
     font-family: 'Rethink Sans', sans-serif;
 }
+
+body{
+    background-color: #dddbdb;
+}
+
+#a{
+    /* background-repeat: no-repeat; */
+    background-position: center;
+    background-size: contain;
+}
+
+blockquote {
+    font-weight: bold;
+    user-select: none;
+    -webkit-user-select: none;
+    color: rgba(255, 255, 255, 0.918);
+}
+
+a:visited , a:link {
+    color: inherit;
+    text-decoration: none;
+    &:hover{
+    color: blueviolet;
+    text-decoration: underline;
+    }
+}
